@@ -1,3 +1,5 @@
+![Console](images/airbnb.png)
+
 # AirBnB Clone Project
 
 This is a simplified clone of the AirBnB web application. The goal of this project is to understand the fundamental concepts of higher-level programming and web development. This project involves building a console for managing various models, including users, places, cities, and amenities, and allows for the storage and retrieval of these models.
