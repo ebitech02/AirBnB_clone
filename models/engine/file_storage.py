@@ -56,14 +56,21 @@ class FileStorage:
             with open(FileStorage.__file_path, "r", encoding="utf-8") as file:
                 try:
                     obj_dict = json.load(file)
-
                     for key, value in obj_dict.items():
-                        class_name, obj_id = key.split('.')
-
-                        cls = eval(class_name)
-
-                        instance = cls(**value)
-
-                        FileStorage.__objects[key] = instance
+                        cls_name = value['__class__']
+                        if cls_name == "BaseModel":
+                            self.__objects[key] = BaseModel(**value)
+                        elif cls_name == "User":
+                            self.__objects[key] = User(**value)
+                        elif cls_name == "State":
+                            self.__objects[key] = State(**value)
+                        elif cls_name == "City":
+                            self.__objects[key] = City(**value)
+                        elif cls_name == "Amenity":
+                            self.__objects[key] = Amenity(**value)
+                        elif cls_name == "Place":
+                            self.__objects[key] = Place(**value)
+                        elif cls_name == "Review":
+                            self.__objects[key] = Review(**value)
                 except Exception:
                     pass
