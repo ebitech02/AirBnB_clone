@@ -36,6 +36,8 @@ git clone https://github.com/yourusername/AirBnB_clone.git
 cd AirBnB_clone
 ```
 ## Usage
+=======
+2. Usage
 
 To start the console, run:
 ```
@@ -60,6 +62,7 @@ update <ClassName> <id> <attribute name> <attribute value>: Update the instance 
 <ClassName>.update(<id>, <attribute name>, <attribute value>): Update an instance based on its ID with a specified attribute and value
 <ClassName>.update(<id>, <dictionary representation>): Update an instance based on its ID with a dictionary of attributes
 ```
+
 # Command Interpreter
 
 ### How to Start It
