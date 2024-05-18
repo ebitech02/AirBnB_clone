@@ -1,3 +1,5 @@
+![Console](images/airbnb.png)
+
 # AirBnB Clone Project
 
 This is a simplified clone of the AirBnB web application. The goal of this project is to understand the fundamental concepts of higher-level programming and web development. This project involves building a console for managing various models, including users, places, cities, and amenities, and allows for the storage and retrieval of these models.
@@ -8,6 +10,10 @@ This is a simplified clone of the AirBnB web application. The goal of this proje
 - [Getting Started](#getting-started)
 - [Usage](#usage)
 - [Commands](#commands)
+- [Command Interpreter](#command-interpreter)
+  - [How to Start It](#how-to-start-it)
+  - [How to Use It](#how-to-use-it)
+  - [Examples](#examples)
 - [Models](#models)
 - [Testing](#testing)
 - [Authors](#authors)
@@ -31,6 +37,8 @@ This project is the first step towards building a full web application similar t
 git clone https://github.com/yourusername/AirBnB_clone.git
 cd AirBnB_clone
 ```
+## Usage
+=======
 2. Usage
 
 To start the console, run:
@@ -57,6 +65,44 @@ update <ClassName> <id> <attribute name> <attribute value>: Update the instance 
 <ClassName>.update(<id>, <dictionary representation>): Update an instance based on its ID with a dictionary of attributes
 ```
 
+# Command Interpreter
+
+### How to Start It
+To start the command interpreter, run:
+```
+python console.py
+```
+### How to Use It
+You can use the command interpreter to manage your models by typing commands at the prompt. Each command allows you to perform a specific action on the models.
+For example, you can create new instances, retrieve existing ones, update them, and delete them.
+
+### Examples
+Here are some examples of how to use the command interpreter:
+### Create a new instance of a model:
+```
+(hbnb) create User - This will create a new User instance and print its id.
+```
+### Show an instance of a model:
+```
+(hbnb) show User (id) - This will print the string representation of the User instance with the specified id.
+```
+### Destroy an instance of a model:
+```
+(hbnb) destroy User (id) - This will delete the User instance with the specified id.
+```
+### Update an instance of a model:
+```
+(hbnb) update User (id) - This will update the email attribute of the User instance with the specified id.
+```
+### Retrieve all instances of a model:
+```
+(hbnb) all User - This will print a list of all User instances.
+```
+### Retrieve the number of instances of a model:
+```
+(hbnb) User.count() - This will print the number of User instances.
+```
+
 ## Models
 
 The project includes several models, each represented by a Python class. These models inherit from the BaseModel class and include:
@@ -77,8 +123,8 @@ python -m unittest discover tests
 ```
 
 ## Authors
-
+```
 Musyoki Dominic
 Precious Oromoni
-
+```
 Feel free to contribute to this project by submitting pull requests. If you encounter any issues, please report them on the project's GitHub page.
