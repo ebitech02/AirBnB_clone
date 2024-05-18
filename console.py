@@ -128,7 +128,7 @@ class HBNBCommand(cmd.Cmd):
         if len(command_arg) == 0:
             for key, value in objs.items():
                 obj_list.append("[{}] ({}) {}".format(value.__class__.__name__, value.id, value.__dict__))
-            elif command_arg[0] not in self.classes:
+        elif command_arg[0] not in self.classes:
             print("** class doesn't exist **")
         else:
             for key, value in objs.items():
