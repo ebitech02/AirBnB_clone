@@ -123,15 +123,18 @@ class HBNBCommand(cmd.Cmd):
         command_arg = arg.split()
 
         objs = storage.all()
+        obj_list = []
+
         if len(command_arg) == 0:
             for key, value in objs.items():
-                print(str(value))
-        elif command_arg[0] not in self.classes:
+                obj_list.append("[{}] ({}) {}".format(value.__class__.__name__, value.id, value.__dict__))
+            elif command_arg[0] not in self.classes:
             print("** class doesn't exist **")
         else:
             for key, value in objs.items():
                 if key.split('.')[0] == command_arg[0]:
-                    print(str(value))
+                    obj_list.append("[{}] ({}) {}".format(value.__class__.__name__, value.id, value.__dict__))
+                    print(obj_list)
 
     def do_update(self, arg):
         """
