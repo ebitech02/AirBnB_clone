@@ -80,10 +80,12 @@ class HBNBCommand(cmd.Cmd):
             elif len(command_arg) < 2:
                 print("** instance id missing **")
             else:
+                class_name = command_arg[0]
+                instance_id = command_arg[1].strip('"')
                 objs = storage.all()
-                key = "{}.{}".format(command_arg[0], command_arg[1].strip('"'))
+                key = "{}.{}".format(class_name, instance_id)
                 if key in objs:
-                    print(objs[key])
+                    print("[{}] ({}) {}".format(class_name, instance_id, objs[key].__dict__))
                 else:
                     print("** no instance found")
         except Exception:
@@ -195,7 +197,7 @@ class HBNBCommand(cmd.Cmd):
                 elif method_call == "count()":
                     self.do_count(class_name)
                 elif method_call.startswith("show(") and method_call.endswith(")"):
-                    instance_id = method_call[5:-1]
+                    instance_id = method_call[5:-1].strip('"')
                     self.do_show("{} {}".format(class_name, instance_id))
                 else:
                     print("*** Unknown syntax: {}".format(line))
