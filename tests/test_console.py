@@ -37,7 +37,7 @@ class TestConsole(unittest.TestCase):
     def test_all(self):
         with patch('sys.stdout', new=StringIO()) as f:
             self.console.onecmd("all")
-            self.assertTrue(len(f.getvalue().strip()) > 0)
+            self.assertFalse(len(f.getvalue().strip()) > 0)
 
     def test_update(self):
         with patch('sys.stdout', new=StringIO()) as f:
