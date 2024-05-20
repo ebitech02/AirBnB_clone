@@ -85,7 +85,8 @@ class HBNBCommand(cmd.Cmd):
                 objs = storage.all()
                 key = "{}.{}".format(class_name, instance_id)
                 if key in objs:
-                    print("[{}] ({}) {}".format(class_name, instance_id, objs[key].__dict__))
+                    print("[{}] ({}) {}".
+                          format(class_name, instance_id, objs[key].__dict__))
                 else:
                     print("** no instance found")
         except Exception:
@@ -129,14 +130,18 @@ class HBNBCommand(cmd.Cmd):
 
         if len(command_arg) == 0:
             for key, value in objs.items():
-                obj_list.append("[{}] ({}) {}".format(value.__class__.__name__, value.id, value.__dict__))
+                obj_list.append("[{}] ({}) {}".
+                                format(value.__class__.__name__,
+                                       value.id, value.__dict__))
         elif command_arg[0] not in self.classes:
             print("** class doesn't exist **")
             return
         else:
             for key, value in objs.items():
                 if key.split('.')[0] == command_arg[0]:
-                    obj_list.append("[{}] ({}) {}".format(value.__class__.__name__, value.id, value.__dict__))
+                    obj_list.append("[{}] ({}) {}".
+                                    format(value.__class__.__name__,
+                                           value.id, value.__dict__))
                     print(obj_list)
 
     def do_update(self, arg):
@@ -190,14 +195,14 @@ class HBNBCommand(cmd.Cmd):
         command_arg = line.split('.')
 
         if len(command_arg) == 2:
-            class_name, method_call = command_arg[0], command_arg[1].strip()
+            class_name, m_call = command_arg[0], command_arg[1].strip()
             if class_name in self.classes:
-                if method_call == "all()":
+                if m_call == "all()":
                     self.do_all(class_name)
-                elif method_call == "count()":
+                elif m_call == "count()":
                     self.do_count(class_name)
-                elif method_call.startswith("show(") and method_call.endswith(")"):
-                    instance_id = method_call[5:-1].strip('"')
+                elif m_call.startswith("show(") and m_call.endswith(""):
+                    instance_id = m_call[5:-1].strip('"')
                     self.do_show("{} {}".format(class_name, instance_id))
                 else:
                     print("*** Unknown syntax: {}".format(line))
