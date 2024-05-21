@@ -98,22 +98,17 @@ class TestUser_save(unittest.TestCase):
     @classmethod
     def setUp(self):
         try:
-            # self.test_file = "file.json"
-            # models.storage.__file_path = self.test_file
-            # models.storage.save()
-            os.rename("file.json", "tmp")
+            os.rename("file.json", "temp.json")
         except IOError:
             pass
 
     def tearDown(self):
         try:
-            # if os.path.exists(self.test_file):
-            #     os.remove(self.test_file)
             os.remove("file.json")
         except IOError:
             pass
         try:
-            os.rename("tmp", "file.json")
+            os.rename("temp.json", "file.json")
         except IOError:
             pass
 
@@ -146,48 +141,6 @@ class TestUser_save(unittest.TestCase):
         userid = "User." + user.id
         with open("file.json", "r") as f:
             self.assertIn(userid, f.read())
-
-    # def test_user_attributes(self):
-    #     # Create a new User instance
-    #     test_user = User()
-    #     # Check if the defaults values of email, password, firstname,
-    #     # and lastname are empty strings
-    #     self.assertEqual(test_user.email, "")
-    #     self.assertEqual(test_user.password, "")
-    #     self.assertEqual(test_user.first_name, "")
-    #     self.assertEqual(test_user.last_name, "")
-
-    # def test_user_str_representation(self):
-    #     test_user = User()
-    #     # Set the attributes of the user instance
-    #     test_user.email = "johnDoe@gmail.com"
-    #     test_user.password = "John123"
-    #     test_user.first_name = "John"
-    #     test_user.last_name = "Doe"
-    #     # Get the string representation of the User instance
-    #     user_str = str(test_user)
-    #     # Check if the user, email, password, firstname
-    #     # and lastname are present in the string representation
-    #     self.assertIn("User", user_str)
-    #     self.assertIn("johnDoe@gmail.com", user_str)
-    #     self.assertIn("John123", user_str)
-    #     self.assertIn("John", user_str)
-    #     self.assertIn("Doe", user_str)
-
-    # def test_user_instance_creation(self):
-    #     test_user = User(email="johnDoe@gmail.com", password="John123",
-    #                      first_name="John", last_name="Doe")
-    #     # Check if the attributes are set correctly
-    #     self.assertEqual(test_user.email, "johnDoe@gmail.com")
-    #     self.assertEqual(test_user.password, "John123")
-    #     self.assertEqual(test_user.first_name, "John")
-    #     self.assertEqual(test_user.last_name, "Doe")
-
-    # def test_user_id_generation(self):
-    #     test_user = User()
-    #     user2 = User()
-    #     # Ensure the id attribute of each user instance is unique
-    #     self.assertNotEqual(test_user.id, user2.id)
 
 
 class TestUser_to_dict(unittest.TestCase):
