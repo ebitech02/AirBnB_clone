@@ -38,7 +38,7 @@ class TestFileStorage_methods(unittest.TestCase):
     def setUp(self):
         """Set up test methods by creating a temporary test file if needed."""
         try:
-            os.rename("file.json", "tmp.json")
+            os.rename("file.json", "temp.json")
         except FileNotFoundError:
             pass
 
@@ -49,7 +49,7 @@ class TestFileStorage_methods(unittest.TestCase):
         except FileNotFoundError:
             pass
         try:
-            os.rename("tmp.json", "file.json")
+            os.rename("temp.json", "file.json")
         except FileNotFoundError:
             pass
         FileStorage._FileStorage__objects = {}
