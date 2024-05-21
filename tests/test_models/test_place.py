@@ -152,7 +152,7 @@ class TestPlace_save(unittest.TestCase):
     """
     def setUp(self):
         try:
-            os.rename("file.json", "tmp.json")
+            os.rename("file.json", "temp.json")
         except FileNotFoundError:
             pass
 
@@ -162,7 +162,7 @@ class TestPlace_save(unittest.TestCase):
         except FileNotFoundError:
             pass
         try:
-            os.rename("tmp.json", "file.json")
+            os.rename("temp.json", "file.json")
         except FileNotFoundError:
             pass
 
