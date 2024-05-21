@@ -93,7 +93,7 @@ class TestAmenity_save(unittest.TestCase):
     @classmethod
     def setUp(self):
         try:
-            os.rename("file.json", "tmp")
+            os.rename("file.json", "temp.json")
         except IOError:
             pass
 
@@ -103,7 +103,7 @@ class TestAmenity_save(unittest.TestCase):
         except IOError:
             pass
         try:
-            os.rename("tmp", "file.json")
+            os.rename("temp.json", "file.json")
         except IOError:
             pass
 
