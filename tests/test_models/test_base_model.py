@@ -18,7 +18,7 @@ class TestBaseModel(unittest.TestCase):
         Setup for temporary file path
         """
         try:
-            os.rename("file.json", "tmp.json")
+            os.rename("file.json", "temp.json")
         except FileNotFoundError:
             pass
 
@@ -31,7 +31,7 @@ class TestBaseModel(unittest.TestCase):
         except FileNotFoundError:
             pass
         try:
-            os.rename("tmp.json", "file.json")
+            os.rename("temp.json", "file.json")
         except FileNotFoundError:
             pass
 
