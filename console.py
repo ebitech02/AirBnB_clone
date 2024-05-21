@@ -10,6 +10,8 @@ from models.amenity import Amenity
 from models.place import Place
 from models.review import Review
 from models import storage
+import re
+import shlex
 
 
 class HBNBCommand(cmd.Cmd):
@@ -34,9 +36,8 @@ class HBNBCommand(cmd.Cmd):
 
     def do_EOF(self, arg):
         """
-        EOF command to exit the program.
+        EOF (Ctrl+D) signal to exit the program.
         """
-        print()
         return True
 
     def emptyline(self):
@@ -45,13 +46,18 @@ class HBNBCommand(cmd.Cmd):
         """
         pass
 
+    def do_help(self, arg):
+        """
+        help manual
+        """
+        cmd.Cmd.do_help(self, arg)
+
     def do_create(self, arg):
         """
         Creates a new instance of BaseModel, saves it (to the JSON file)
         and prints the id.
-        Usage: create <class name>
         """
-        command_arg = arg.split()
+        command_arg = shlex.split(arg)
 
         try:
             if not arg:
@@ -69,9 +75,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints the string representation of an instance based on the
         class name and id.
-        Usage: show <class name> <id>
         """
-        command_arg = arg.split()
+        command_arg = shlex.split(arg)
         try:
             if len(command_arg) == 0:
                 print("** class name missing **")
@@ -96,9 +101,8 @@ class HBNBCommand(cmd.Cmd):
         """
         Deletes an instance based on the class name and id
         (save the change into the JSON file).
-        Usage: destroy <class name> <id>
         """
-        command_arg = arg.split()
+        command_arg = shlex.split(arg)
         try:
             if len(command_arg) == 0:
                 print("** class name missing **")
@@ -121,36 +125,25 @@ class HBNBCommand(cmd.Cmd):
         """
         Prints all string representation of all instances
         based or not on the class name.
-        Usage: all [<class name>]
         """
-        command_arg = arg.split()
-
         objs = storage.all()
-        obj_list = []
-
+        command_arg = shlex.split(arg)
         if len(command_arg) == 0:
             for key, value in objs.items():
-                obj_list.append("[{}] ({}) {}".
-                                format(value.__class__.__name__,
-                                       value.id, value.__dict__))
+                print(str(value))
         elif command_arg[0] not in self.classes:
             print("** class doesn't exist **")
-            return
         else:
             for key, value in objs.items():
                 if key.split('.')[0] == command_arg[0]:
-                    obj_list.append("[{}] ({}) {}".
-                                    format(value.__class__.__name__,
-                                           value.id, value.__dict__))
-                    print(obj_list)
+                    print(str(value))
 
     def do_update(self, arg):
         """
         Updates an instance based on the class name and id
         by adding or updating attribute.
-        Usage: update <class name> <id> <attribute name> "<attribute value>"
         """
-        command_arg = arg.split()
+        command_arg = shlex.split(arg)
 
         if len(command_arg) == 0:
             print("** class name missing **")
@@ -168,48 +161,143 @@ class HBNBCommand(cmd.Cmd):
             elif len(command_arg) < 4:
                 print("** value missing **")
             else:
-                objs = storage.all()[key]
-                setattr(objs, command_arg[2], command_arg[3].strip('"'))
-                objs.save()
+                obj = objs[key]
+                braces = re.search(r"\{(.*?)\}", arg)
+                if braces:
+                    str_data = braces.group(1)
+                    # convert str_data into python object and back to dict
+                    a_dict = eval("{" + str_data + "}")
+                    # Convert the arguments in the dict into list
+                    arg_names = list(a_dict.keys())
+                    arg_values = list(a_dict.values())
 
-    def do_count(self, class_name):
+                    atr_name1 = arg_names[0]
+                    atr_value1 = arg_values[0]
+
+                    atr_name2 = arg_names[1]
+                    atr_value2 = arg_values[1]
+
+                    setattr(obj, atr_name1, atr_value1)
+                    setattr(obj, atr_name2, atr_value2)
+                else:
+                    atr_name = command_arg[2]
+                    atr_value = command_arg[3]
+                    try:
+                        atr_value = eval(atr_value)
+                    except Exception:
+                        pass
+                    setattr(obj, atr_name, atr_value)
+
+                    obj.save()
+
+    def do_count(self, arg):
         """
         Counts and retrieves the number of instances of a class
-        usage: <class name>.count()
         """
-        if not class_name:
-            print("** class name missing **")
-        elif class_name not in self.classes:
-            print("** class doesn't exist **")
-        else:
-            count = sum(1 for obj in storage.all().values()
-                        if obj.__class__.__name__ == class_name)
-            print(count)
+        objs = storage.all()
+        command_arg = shlex.split(arg)
 
-    def default(self, line):
+        if arg:
+            class_nam = command_arg[0]
+
+        count = 0
+
+        if command_arg:
+            if class_nam in self.classes:
+                for obj in objs.values():
+                    if obj.__class__.__name__ == class_nam:
+                        count += 1
+                print(count)
+            else:
+                print("** invalid class name **")
+        else:
+            print("** class name missing **")
+
+    def default(self, arg):
         """
         Catches commands that are not explicitly defined.
-        Here, we handle commands like <class name>.all()
-        and <class name>.count().
+        Commands handled are like <class name>.all(),
+        <class name>.count(), <class name>.destroy(),
+        <class name>.update()
         """
-        command_arg = line.split('.')
+        arg_lst = arg.split('.')
+        inc_cls_nam = arg_lst[0]  # incoming class name
+        command_arg = arg_lst[1].split('(')  # Incoming arguments
+        inc_cmd_meth = command_arg[0]  # incoming command method
+        inc_ex_arg = command_arg[1].split(')')[0]  # incoming extra arguments
 
-        if len(command_arg) == 2:
-            class_name, m_call = command_arg[0], command_arg[1].strip()
-            if class_name in self.classes:
-                if m_call == "all()":
-                    self.do_all(class_name)
-                elif m_call == "count()":
-                    self.do_count(class_name)
-                elif m_call.startswith("show(") and m_call.endswith(""):
-                    instance_id = m_call[5:-1].strip('"')
-                    self.do_show("{} {}".format(class_name, instance_id))
-                else:
-                    print("*** Unknown syntax: {}".format(line))
+        # all_args = inc_ex_arg.split('.')
+
+        meth_dict = {
+                'all': self.do_all,
+                'show': self.do_show,
+                'destroy': self.do_destroy,
+                'update': self.do_update,
+                'count': self.do_count
+                }
+
+        if inc_cmd_meth in meth_dict.keys():
+            if inc_cmd_meth != "update":
+                # Method construct
+                return meth_dict[inc_cmd_meth]("{} {}".format(inc_cls_nam,
+                                                              inc_ex_arg))
             else:
-                print("** class doesn't exist **")
-        else:
-            print("*** Unknown syntax: {}".format(line))
+                # object_id = all_args[0]
+                # attr_name = all_args[1]
+                # attr_value = all_args[2]
+                obj_id, a_dict = split_braces(inc_ex_arg)
+
+                try:
+                    if isinstance(a_dict, str):
+                        str_attr = a_dict
+                        return meth_dict[inc_cmd_meth]("{} {} {}".format
+                                                       (inc_cls_nam, obj_id,
+                                                        str_attr))
+                    elif isinstance(a_dict, dict):
+                        dict_attr = a_dict
+                        return meth_dict[inc_cmd_meth]("{} {} {}".format
+                                                       (inc_cls_nam, obj_id,
+                                                        dict_attr))
+                except Exception:
+                    print("** argument missing **")
+
+        print("*** Unknown syntax: {}".format(arg))
+        return False
+
+
+def split_braces(inc_ex_arg):
+    """
+    Splits the braces for the update method
+    """
+    braces = re.search(r"\{(.*?)\}", inc_ex_arg)
+
+    if braces:
+        unique_id = shlex.split(inc_ex_arg[:braces.span()[0]])
+        id = [i.strip(",") for i in unique_id][0]
+
+        str_data = braces.group(1)
+        try:
+            a_dict = eval("{" + str_data + "}")
+        except Exception:
+            print("**  invalid dictionary format **")
+            return
+        return id, a_dict
+    else:
+        command_arg = inc_ex_arg.split(",")
+        if command_arg:
+            try:
+                id = command_arg[0]
+            except Exception:
+                return "", ""
+            try:
+                atr_name = command_arg[1]
+            except Exception:
+                return id, ""
+            try:
+                atr_value = command_arg[2]
+            except Exception:
+                return id, atr_name
+            return f"{id}", f"{atr_name} {atr_value}"
 
 
 if __name__ == '__main__':
