@@ -1,0 +1,7 @@
+/* This file contains styles specific to the header, setting the background color, height, and width. */
+
+header {
+    background-color: #FF0000;
+    height: 70px;
+    width: 100%;
+}
