@@ -1,0 +1,96 @@
+.filters {
+    background-color: white;
+    height: 70px;
+    width: 100%;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.locations,
+.amenities {
+    height: 100%;
+    width: 25%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding-left: 20px;
+    position: relative;
+}
+
+.locations {
+    border-right: 1px solid #DDDDDD;
+}
+
+.locations h3,
+.amenities h3 {
+    font-weight: 600;
+    margin: 0;
+}
+
+.locations h4,
+.amenities h4 {
+    font-weight: 400;
+    font-size: 14px;
+    margin: 0;
+}
+
+button.search-button {
+    background-color: #FF5A5F;
+    color: white;
+    height: 48px;
+    width: 20%;
+    border: none;
+    border-radius: 4px;
+    font-size: 18px;
+    position: absolute;
+    right: 30px;
+    cursor: pointer;
+}
+
+button:hover {
+    opacity: 0.9;
+}
+
+.popover {
+    display: none;
+    position: absolute;
+    top: 70px; /* Positioned below the filter bar */
+    background-color: #FAFAFA;
+    width: 209px;
+    border: 1px solid #DDDDDD;
+    border-radius: 4px;
+    list-style-type: none;
+    margin: 0px;
+	padding: 20px 30px;
+}
+
+.locations:hover .popover {
+    display: block;
+    left: 0; /* Align below the locations section */
+}
+
+.amenities:hover .popover {
+    display: block;
+    width: 200px;
+    margin-left: -21px;
+}
+
+.popover li {
+    padding: 4px;
+    list-style-type: none;
+}
+
+.popover-items {
+    margin-top: 5px; /* Reduce space above the list */
+    margin-bottom: 10px; /* Maintain space below the list */
+    margin-left: -30px; 
+}
+
+.popover h2 {
+    font-size: 16px;
+    margin: 0;
+    margin-bottom: 5px;
+}
