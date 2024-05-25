@@ -1,0 +1,6 @@
+/* This file contains styles that apply globally, such as resetting the body margin and padding. */
+
+body {
+    margin: 0;
+    padding: 0;
+}
